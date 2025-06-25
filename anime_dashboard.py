@@ -63,7 +63,7 @@ display_df['Release Date'] = display_df['release_date'].dt.date
 display_df['Members'] = display_df['members']
 display_df['Genres'] = display_df['genres']
 
-st.write("### Anime List")
+st.write("## Anime List")
 st.write(f"Top {top_n} anime by member count with clickable titles:")
 st.write(display_df[['Title', 'Release Date', 'Members', 'Genres']].to_html(escape=False, index=False), unsafe_allow_html=True)
 
