@@ -35,9 +35,19 @@ with st.sidebar:
     end_date = st.date_input("End date", default_end, min_value=min_date, max_value=max_date)
     top_n = st.slider("Number of top anime to show", 5, 50, 10)
 
+    sort_option = st.selectbox(
+        "Sort anime by:",
+        ("Highest members first", "Earliest release date first")
+    )
+
+
 # Filter by date range
 mask = (df['release_date'] >= pd.to_datetime(start_date)) & (df['release_date'] <= pd.to_datetime(end_date))
-filtered_df = df.loc[mask].sort_values(by='members', ascending=False).head(top_n)
+
+if sort_option == "Earliest release date first":
+    filtered_df = df.loc[mask].sort_values(by='release_date', ascending=True).head(top_n)
+else:
+    filtered_df = df.loc[mask].sort_values(by='members', ascending=False).head(top_n)
 
 # Title and caption
 st.title("Most Popular Anime by Members")
@@ -53,7 +63,7 @@ display_df['Release Date'] = display_df['release_date'].dt.date
 display_df['Members'] = display_df['members']
 display_df['Genres'] = display_df['genres']
 
-st.write("### stAnime List")
+st.write("### Anime List")
 st.write(f"Top {top_n} anime by member count with clickable titles:")
 st.write(display_df[['Title', 'Release Date', 'Members', 'Genres']].to_html(escape=False, index=False), unsafe_allow_html=True)
 
